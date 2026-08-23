@@ -32,7 +32,8 @@ A robust, interactive web application built with Streamlit and Pandas designed t
 
 ### 3. Real-Time Debar / Undebar Toggle & Filtering
 - **Interactive Status Management:** The UI displays the cleaned student table with an interactive status control (a checkbox next to each student row) indicating whether they are Active or Debarred.
-- **Real-Time Exclusion:** If a user toggles a student to "Debarred" in real-time, the system immediately ignores them during the minimum total score threshold queries, without needing to re-upload the dataset.
+- **Visual Redlining & Apply Action:** Users can tick multiple students, then click "DEBAR!" to confidently apply exclusions. Debarred rows are instantly redlined and struck through.
+- **Real-Time Exclusion:** Once applied, the system immediately ignores them during the minimum total score threshold queries, without needing to re-upload the dataset.
 
 ---
 
@@ -43,12 +44,13 @@ The core data cleaning pipeline (`data_cleaning.py`) handles various real-world 
 1. **Schema Validation:** Checks that the uploaded CSV contains all expected columns (Name, Gender, Grade, Math, Science, English, Total).
 2. **Stable Identity Generation:** Assigns a unique UUID to each row before any cleaning occurs. This ensures the "Debarred" status tracks the correct student.
 3. **Ghost Student Removal:** Drops any rows where the Name is missing entirely.
-4. **Duplicate Removal:** Removes exact duplicates based on a combination of the Name (normalized) and the Grade.
-5. **Categorical Normalization:** Standardizes the Gender column using a strict mapping dictionary to resolve casing and typo issues.
-6. **Missing & Invalid Marks Handling:**
+4. **String Normalization:** Uses advanced regex to strip all quotes (single and double) from student Names. Automatically removes the text "Grade" from Grade inputs so only the numeric value remains (e.g., "Grade 5" becomes "5").
+5. **Duplicate Removal:** Removes exact duplicates based on a combination of the Name (normalized) and the Grade.
+6. **Categorical Normalization:** Standardizes the Gender column using a strict mapping dictionary to resolve casing and typo issues.
+7. **Missing & Invalid Marks Handling:**
    - Any missing subject marks (Math, Science, English) are imputed with 0.
    - Any out-of-range marks (e.g., negative numbers or scores > 100) are clipped to valid boundaries (0 to 100).
-7. **Total Validation:** The Total column is independently recalculated as Math + Science + English. If the dataset's original total differs, it overwrites it with the mathematically correct total.
+8. **Total Validation:** The Total column is independently recalculated as Math + Science + English. If the dataset's original total differs, it overwrites it with the mathematically correct total.
 
 ---
 
