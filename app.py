@@ -64,16 +64,36 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
     }
     
-    /* Destructive Primary Button (DEBAR!) */
-    button[kind="primary"] {
+    /* Destructive Button (DEBAR!) */
+    div[data-testid="stButton"] button[kind="primary"] {
         background: linear-gradient(135deg, rgba(239, 68, 68, 0.8), rgba(220, 38, 38, 0.9)) !important;
         border: none !important;
         box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
     }
-    button[kind="primary"]:hover {
+    div[data-testid="stButton"] button[kind="primary"]:hover {
         background: linear-gradient(135deg, rgba(248, 113, 113, 0.9), rgba(239, 68, 68, 1)) !important;
         box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5) !important;
         transform: scale(1.02);
+    }
+    
+    /* Download Button - Vibrant Green with Pulse */
+    div[data-testid="stDownloadButton"] button[kind="primary"] {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.8), rgba(5, 150, 105, 0.9)) !important;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+        animation: pulseGreen 2.5s infinite;
+    }
+    div[data-testid="stDownloadButton"] button[kind="primary"]:hover {
+        background: linear-gradient(135deg, rgba(52, 211, 153, 0.9), rgba(16, 185, 129, 1)) !important;
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5) !important;
+        transform: scale(1.05);
+        animation: none;
+    }
+    
+    @keyframes pulseGreen {
+        0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+        70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
     
     /* Smooth entrance animations */
@@ -148,10 +168,14 @@ st.markdown("""
     
     /* Markdown Headers */
     h3 {
-        font-weight: 600 !important;
-        color: #e2e8f0 !important;
-        margin-top: 1.5rem !important;
-        margin-bottom: 1rem !important;
+        font-weight: 700 !important;
+        font-size: 26px !important;
+        color: #f1f5f9 !important;
+        margin-top: 2.5rem !important;
+        margin-bottom: 1.5rem !important;
+        letter-spacing: -0.5px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        padding-bottom: 10px;
     }
     </style>
 """, unsafe_allow_html=True)
