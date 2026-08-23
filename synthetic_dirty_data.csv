@@ -1,0 +1,11 @@
+Name,Gender,Grade,Math,Science,English,Total
+John Doe,Male,10,85,90,88,263
+Jane Smith,f,10,92,88,95,275
+Alice Jones,Female,11,78,85,,163
+Bob Brown,m,12,-5,105,80,180
+John Doe,Male,10,85,90,88,263
+Charlie Davis,male,10,60,70,65,300
+Eve White,F,11,95,95,95,285
+,Male,10,50,50,50,150
+Grace Hopper,Female,12,100,100,100,300
+Alan Turing,Male,,98,90,95,283
