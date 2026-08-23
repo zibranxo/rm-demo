@@ -4,34 +4,125 @@ import hashlib
 import plotly.express as px
 from data_cleaning import clean_data
 
-st.set_page_config(page_title="DTU Student Pipeline", layout="wide", page_icon="🎓")
+# No emojis in page config
+st.set_page_config(page_title="DTU Student Pipeline", layout="wide")
 
-# Custom CSS for DTU Header
+# Advanced Custom CSS for Modern UI
 st.markdown("""
     <style>
+    /* Import modern font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif !important;
+    }
+    
+    /* Glassmorphism Header */
     .dtu-header {
         display: flex;
         align-items: center;
-        background-color: #2c3e50;
-        padding: 15px 20px;
-        border-radius: 10px;
-        margin-bottom: 25px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background: rgba(30, 41, 59, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 20px 30px;
+        border-radius: 16px;
+        margin-bottom: 35px;
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease;
+    }
+    .dtu-header:hover {
+        transform: translateY(-2px);
     }
     .dtu-header img {
-        height: 60px;
-        margin-right: 20px;
+        height: 65px;
+        margin-right: 25px;
+        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
     }
     .dtu-header h1 {
-        color: white;
+        color: #f8fafc;
         margin: 0;
         font-size: 28px;
         font-weight: 600;
+        letter-spacing: -0.5px;
+    }
+    
+    /* Elegant Buttons with Hover Effects */
+    .stButton > button {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.15)) !important;
+        border: 1px solid rgba(59, 130, 246, 0.4) !important;
+        color: #f8fafc !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1rem !important;
+        font-weight: 500 !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    .stButton > button:hover {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(37, 99, 235, 0.3)) !important;
+        border-color: rgba(96, 165, 250, 0.8) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+    }
+    
+    /* Primary Button variant */
+    button[kind="primary"] {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 0.9)) !important;
+        border: none !important;
+    }
+    button[kind="primary"]:hover {
+        background: linear-gradient(135deg, rgba(96, 165, 250, 0.9), rgba(59, 130, 246, 1)) !important;
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+    
+    /* Subtle container styling */
+    div[data-testid="stContainer"] {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 5px;
+    }
+    
+    /* Expander styling */
+    div[data-testid="stExpander"] {
+        background: rgba(15, 23, 42, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+    
+    /* File uploader dashed border enhancement */
+    section[data-testid="stFileUploadDropzone"] {
+        border: 2px dashed rgba(96, 165, 250, 0.4);
+        background: rgba(15, 23, 42, 0.3);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    section[data-testid="stFileUploadDropzone"]:hover {
+        border-color: rgba(96, 165, 250, 0.8);
+        background: rgba(15, 23, 42, 0.5);
+    }
+    
+    /* Tabs typography */
+    button[data-baseweb="tab"] {
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.3px;
+        color: #94a3b8 !important;
+    }
+    button[aria-selected="true"] {
+        color: #f8fafc !important;
+    }
+    
+    /* Markdown Headers */
+    h3 {
+        font-weight: 600 !important;
+        color: #e2e8f0 !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 1rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# DTU Header
+# DTU Header (Emoji-free)
 st.markdown("""
 <div class="dtu-header">
     <img src="https://upload.wikimedia.org/wikipedia/en/b/b5/DTU%2C_Delhi_official_logo.png" alt="DTU Logo">
@@ -44,7 +135,7 @@ def get_file_hash(uploaded_file):
         return None
     return hashlib.md5(uploaded_file.getvalue()).hexdigest()
 
-tab1, tab2 = st.tabs(["📥 Data Upload & Cleaning", "📊 Analytics & Shortlisting"])
+tab1, tab2 = st.tabs(["Data Upload & Cleaning", "Analytics & Shortlisting"])
 
 with tab1:
     col1, col2 = st.columns([3, 1])
@@ -53,7 +144,7 @@ with tab1:
     with col2:
         st.write("")
         st.write("")
-        if st.button("🗑️ Reset Application", use_container_width=True):
+        if st.button("Reset Application", use_container_width=True):
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
             st.rerun()
@@ -68,7 +159,9 @@ with tab1:
                 st.session_state.cleaned_df = cleaned_df
                 st.session_state.report = report
                 st.session_state.debar_status = {sid: False for sid in cleaned_df['student_id']}
-                st.toast("File uploaded and cleaned successfully!", icon="✅")
+                
+                # Removed emoji icon from toast
+                st.toast("File uploaded and cleaned successfully")
             except Exception as e:
                 st.error(f"Error processing file: {e}")
                 st.stop()
@@ -76,7 +169,7 @@ with tab1:
         df = st.session_state.cleaned_df
         report = st.session_state.report
 
-        st.markdown("### ✨ Data Cleaning Report")
+        st.markdown("### Data Cleaning Report")
         with st.expander("View Pipeline Execution Metrics", expanded=True):
             rc1, rc2, rc3, rc4 = st.columns(4)
             rc1.metric("Initial Rows", report['initial_rows'])
@@ -90,7 +183,7 @@ with tab1:
             rc3.metric("Invalid Marks Clipped", report['out_of_range_marks_clipped'])
             rc4.metric("Totals Recalculated", report['totals_recalculated'])
 
-        st.markdown("### 🚦 Candidate Roster & Debarment")
+        st.markdown("### Candidate Roster & Debarment")
         st.caption("Check the 'Debarred' column to instantly exclude a student from the analytics and shortlist.")
         
         display_df = df.copy()
@@ -113,13 +206,13 @@ with tab1:
 
 with tab2:
     if 'cleaned_df' not in st.session_state:
-        st.info("👈 Please upload a dataset in the 'Data Upload & Cleaning' tab to unlock analytics.")
+        st.info("Please upload a dataset in the 'Data Upload & Cleaning' tab to unlock analytics.")
     else:
         active_df = st.session_state.cleaned_df.copy()
         active_df['Debarred'] = active_df['student_id'].map(st.session_state.debar_status)
         active_df = active_df[~active_df['Debarred']]
         
-        st.markdown("### 🎛️ Shortlist Filters")
+        st.markdown("### Shortlist Filters")
         with st.container(border=True):
             f1, f2, f3, f4 = st.columns(4)
             min_total = f1.number_input("Minimum Total Score", 0, 300, 150)
@@ -137,32 +230,47 @@ with tab2:
         if shortlist.empty:
             st.error("No candidates matched the current filter criteria.")
         else:
-            st.markdown("### 📊 Performance Analytics")
+            st.markdown("### Performance Analytics")
             
             # Top row charts
             c1, c2 = st.columns(2)
             
             # Histogram of Totals
             fig_hist = px.histogram(shortlist, x="Total", nbins=10, title="Distribution of Total Scores", 
-                                    color_discrete_sequence=['#3498db'])
-            fig_hist.update_layout(margin=dict(l=20, r=20, t=40, b=20))
+                                    color_discrete_sequence=['#3b82f6'])
+            fig_hist.update_layout(
+                margin=dict(l=20, r=20, t=40, b=20),
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font=dict(family="Inter", color="#e2e8f0")
+            )
             c1.plotly_chart(fig_hist, use_container_width=True)
             
             # Scatter Plot Math vs Science
             fig_scatter = px.scatter(shortlist, x="Math", y="Science", size="Total", color="Grade",
                                      hover_name="Name", title="Math vs Science Performance",
                                      color_discrete_sequence=px.colors.qualitative.Set2)
-            fig_scatter.update_layout(margin=dict(l=20, r=20, t=40, b=20))
+            fig_scatter.update_layout(
+                margin=dict(l=20, r=20, t=40, b=20),
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font=dict(family="Inter", color="#e2e8f0")
+            )
             c2.plotly_chart(fig_scatter, use_container_width=True)
             
             # Box plot for subjects
             st.markdown("#### Subject Wise Spread")
             box_data = shortlist[['Math', 'Science', 'English']].melt(var_name='Subject', value_name='Score')
             fig_box = px.box(box_data, x='Subject', y='Score', color='Subject', title="Score Spread per Subject")
-            fig_box.update_layout(margin=dict(l=20, r=20, t=40, b=20))
+            fig_box.update_layout(
+                margin=dict(l=20, r=20, t=40, b=20),
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font=dict(family="Inter", color="#e2e8f0")
+            )
             st.plotly_chart(fig_box, use_container_width=True)
             
-            st.markdown("### 🏆 Final Shortlist")
+            st.markdown("### Final Shortlist")
             sc1, sc2, sc3 = st.columns(3)
             sc1.metric("Shortlisted Candidates", len(shortlist))
             sc2.metric("Average Score", f"{shortlist['Total'].mean():.1f}")
@@ -171,4 +279,4 @@ with tab2:
             st.dataframe(shortlist.drop(columns=['student_id', 'Debarred']), hide_index=True, use_container_width=True)
             
             csv = shortlist.drop(columns=['student_id', 'Debarred']).to_csv(index=False).encode('utf-8')
-            st.download_button("📥 Export Final Shortlist as CSV", data=csv, file_name='dtu_shortlist.csv', mime='text/csv', type="primary")
+            st.download_button("Export Final Shortlist as CSV", data=csv, file_name='dtu_shortlist.csv', mime='text/csv', type="primary")
