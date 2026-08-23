@@ -11,8 +11,8 @@ A robust, interactive web application built with Streamlit and Pandas designed t
 
 ## Live Demo & Presentation
 
-* **Live Application:** [Link to Streamlit Community Cloud Deployment](#) *(Replace with your live link)*
-* **Video Demonstration:** [Link to 90-second Demo Video](#) *(Replace with YouTube/Loom link or embed)*
+* **Live Application:** [Link to Live Application](https://rm-demo.streamlit.app/)
+* **Video Demonstration:** [Link to 90-second Demo Video](https://drive.google.com/drive/u/2/folders/1dYoZdqdSKDFkWTc5uRyR_lG69OtDwKuZ)
 
 > **Note for Reviewers:** The video demonstration highlights the Upload process, the auto-cleaning functionality, the interactive Debar toggle filtering, and the CSV export capabilities.
 
