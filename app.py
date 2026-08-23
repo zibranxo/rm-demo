@@ -87,6 +87,24 @@ st.markdown("""
         background: rgba(15, 23, 42, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.05);
         border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+    div[data-testid="stExpander"]:hover {
+        border-color: rgba(96, 165, 250, 0.5);
+    }
+    
+    /* Metrics styling */
+    div[data-testid="stMetric"] {
+        background: rgba(30, 41, 59, 0.4);
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+    div[data-testid="stMetric"]:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border-color: rgba(96, 165, 250, 0.5);
     }
     
     /* File uploader dashed border enhancement */
