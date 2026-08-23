@@ -202,7 +202,7 @@ with tab1:
             rc4.metric("Totals Recalculated", report['totals_recalculated'])
 
         st.markdown("### Candidate Roster & Debarment")
-        st.caption("Check the 'Debarred' column to instantly exclude a student from the analytics and shortlist.")
+        st.caption("Check the 'Debarred' column and click 'Apply Debar Updates' to confirm.")
         
         display_df = df.copy()
         display_df['Debarred'] = display_df['student_id'].map(st.session_state.debar_status)
@@ -216,11 +216,14 @@ with tab1:
             disabled=["Name", "Gender", "Grade", "Math", "Science", "English", "Total"],
             hide_index=True,
             use_container_width=True,
-            height=400
+            height=600,
+            key="debar_editor"
         )
         
-        for i, row in edited_df.iterrows():
-            st.session_state.debar_status[row['student_id']] = row['Debarred']
+        if st.button("Apply Debar Updates", type="primary"):
+            for i, row in edited_df.iterrows():
+                st.session_state.debar_status[row['student_id']] = row['Debarred']
+            st.rerun()
 
 with tab2:
     if 'cleaned_df' not in st.session_state:
@@ -294,7 +297,7 @@ with tab2:
             sc2.metric("Average Score", f"{shortlist['Total'].mean():.1f}")
             sc3.metric("Highest Score", shortlist['Total'].max())
             
-            st.dataframe(shortlist.drop(columns=['student_id', 'Debarred']), hide_index=True, use_container_width=True)
+            st.dataframe(shortlist.drop(columns=['student_id', 'Debarred']), hide_index=True, use_container_width=True, height=600)
             
             csv = shortlist.drop(columns=['student_id', 'Debarred']).to_csv(index=False).encode('utf-8')
             st.download_button("Export Final Shortlist as CSV", data=csv, file_name='dtu_shortlist.csv', mime='text/csv', type="primary")
