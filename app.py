@@ -338,6 +338,50 @@ with tab2:
             )
             st.plotly_chart(fig_box, use_container_width=True)
             
+            st.markdown("### Individual Student Profiler")
+            st.caption("Select a student to compare their individual subject breakdown against the shortlist average.")
+            
+            selected_student = st.selectbox("Select Candidate:", shortlist['Name'].tolist())
+            
+            if selected_student:
+                student_data = shortlist[shortlist['Name'] == selected_student].iloc[0]
+                
+                categories = ['Math', 'Science', 'English']
+                student_scores = [student_data['Math'], student_data['Science'], student_data['English']]
+                avg_scores = [shortlist['Math'].mean(), shortlist['Science'].mean(), shortlist['English'].mean()]
+                
+                import plotly.graph_objects as go
+                fig_radar = go.Figure()
+                
+                fig_radar.add_trace(go.Scatterpolar(
+                    r=student_scores + [student_scores[0]], 
+                    theta=categories + [categories[0]],
+                    fill='toself',
+                    name=student_data['Name'],
+                    line_color='#10b981'
+                ))
+                
+                fig_radar.add_trace(go.Scatterpolar(
+                    r=avg_scores + [avg_scores[0]],
+                    theta=categories + [categories[0]],
+                    fill='toself',
+                    name='Shortlist Average',
+                    line_color='#3b82f6'
+                ))
+                
+                fig_radar.update_layout(
+                    polar=dict(
+                        radialaxis=dict(visible=True, range=[0, 100], gridcolor="rgba(255,255,255,0.1)"),
+                        bgcolor="rgba(0,0,0,0)"
+                    ),
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    font=dict(family="Inter", color="#e2e8f0"),
+                    margin=dict(l=20, r=20, t=40, b=20)
+                )
+                
+                st.plotly_chart(fig_radar, use_container_width=True)
+            
             st.markdown("### Final Shortlist")
             sc1, sc2, sc3 = st.columns(3)
             sc1.metric("Shortlisted Candidates", len(shortlist))
