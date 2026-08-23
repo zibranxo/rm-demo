@@ -64,14 +64,30 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
     }
     
-    /* Primary Button variant */
+    /* Destructive Primary Button (DEBAR!) */
     button[kind="primary"] {
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 0.9)) !important;
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.8), rgba(220, 38, 38, 0.9)) !important;
         border: none !important;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
     }
     button[kind="primary"]:hover {
-        background: linear-gradient(135deg, rgba(96, 165, 250, 0.9), rgba(59, 130, 246, 1)) !important;
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, rgba(248, 113, 113, 0.9), rgba(239, 68, 68, 1)) !important;
+        box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5) !important;
+        transform: scale(1.02);
+    }
+    
+    /* Smooth entrance animations */
+    @keyframes fadeInSlideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .block-container {
+        animation: fadeInSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    /* Smooth transitions for tables */
+    [data-testid="stDataFrame"] {
+        transition: all 0.3s ease;
     }
     
     /* Subtle container styling */
@@ -207,8 +223,15 @@ with tab1:
         display_df = df.copy()
         display_df['Debarred'] = display_df['student_id'].map(st.session_state.debar_status)
         
+        def highlight_debarred(row):
+            if row['Debarred']:
+                return ['background-color: rgba(239, 68, 68, 0.15); color: #fca5a5; text-decoration: line-through;'] * len(row)
+            return [''] * len(row)
+            
+        styled_df = display_df.style.apply(highlight_debarred, axis=1)
+        
         edited_df = st.data_editor(
-            display_df,
+            styled_df,
             column_config={
                 "Debarred": st.column_config.CheckboxColumn("Debarred?", default=False),
                 "student_id": None
@@ -220,7 +243,7 @@ with tab1:
             key="debar_editor"
         )
         
-        if st.button("Apply Debar Updates", type="primary"):
+        if st.button("DEBAR!", type="primary"):
             for i, row in edited_df.iterrows():
                 st.session_state.debar_status[row['student_id']] = row['Debarred']
             st.rerun()
