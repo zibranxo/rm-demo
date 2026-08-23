@@ -53,9 +53,9 @@ def clean_data(raw_df):
     df = df.dropna(subset=['Name'])
     report["missing_names_dropped"] = initial_len - len(df)
     
-    # Strip whitespace from Name and Grade for consistent matching
-    df['Name'] = df['Name'].astype(str).str.strip().str.title()
-    df['Grade'] = df['Grade'].fillna("Unknown").astype(str).str.strip()
+    # Clean quotes from Names and remove 'Grade ' prefix for consistent matching
+    df['Name'] = df['Name'].astype(str).str.replace(r'''['"]+''', '', regex=True).str.strip().str.title()
+    df['Grade'] = df['Grade'].fillna("Unknown").astype(str).str.replace(r'(?i)grade\s*', '', regex=True).str.strip()
     
     # 4. Remove exact duplicates based on Name and Grade
     initial_len = len(df)
